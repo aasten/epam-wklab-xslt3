@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"><fo:layout-master-set><fo:simple-page-master master-name="content" page-width="297mm" page-height="210mm"><fo:region-body region-name="main-region"/><fo:region-after region-name="footer" extent="1cm"/></fo:simple-page-master></fo:layout-master-set><fo:page-sequence master-reference="content"><fo:static-content flow-name="footer"><fo:block>© CCH</fo:block></fo:static-content><fo:flow flow-name="main-region"><fo:block>
+<?xml version="1.0" encoding="UTF-8"?><fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"><fo:layout-master-set><fo:simple-page-master master-name="content" page-width="297mm" page-height="210mm"><fo:region-body region-name="main-region"/><fo:region-after region-name="footer" extent="1cm"/></fo:simple-page-master></fo:layout-master-set><fo:page-sequence master-reference="content"><fo:static-content flow-name="footer"><fo:block border-top-style="solid" border-top-color="#2F64C6" padding-top="0.1em">
+						© CCH
+					</fo:block></fo:static-content><fo:flow flow-name="main-region"><fo:block>
 
-FC of T v ADMINISTRATIVE APPEALS TRIBUNAL &amp; ORS
-
-
-Court Ready PDF
-
-
+<fo:block font-size="14" font-weight="900" padding="1em 0">FC of T v ADMINISTRATIVE APPEALS TRIBUNAL &amp; ORS</fo:block>
+<fo:block-container width="15%"><fo:block background-color="#FDFBF4" border-color="#DCDAD5" border-style="solid"><fo:inline-container alignment-baseline="middle" inline-progression-dimension="20%"><fo:block start-indent="5pt"><fo:external-graphic src="filepict.png" height="1.5em" content-height="scale-to-fit"/></fo:block></fo:inline-container><fo:inline-container alignment-baseline="middle" inline-progression-dimension="80%"><fo:block>Court Ready PDF</fo:block></fo:inline-container></fo:block></fo:block-container>
 
 
 
