@@ -3,7 +3,7 @@
 					</fo:block></fo:static-content><fo:flow flow-name="main-region"><fo:block>
 
 <fo:block font-size="14" font-weight="900" padding="1em 0">FC of T v ADMINISTRATIVE APPEALS TRIBUNAL &amp; ORS</fo:block>
-<fo:block-container width="15%"><fo:block background-color="#FDFBF4" border-color="#DCDAD5" border-style="solid"><fo:inline-container alignment-baseline="middle" inline-progression-dimension="20%"><fo:block start-indent="5pt"><fo:external-graphic src="filepict.png" height="1.5em" content-height="scale-to-fit"/></fo:block></fo:inline-container><fo:inline-container alignment-baseline="middle" inline-progression-dimension="80%"><fo:block>Court Ready PDF</fo:block></fo:inline-container></fo:block></fo:block-container>
+<fo:block-container width="16.35em"><fo:block background-color="#FDFBF4" border-color="#DCDAD5" border-style="solid" text-align="left"><fo:inline-container alignment-baseline="middle" inline-progression-dimension="13.468013468013468013%"><fo:block start-indent="0.5em" width="1.5em"><fo:external-graphic src="filepict.png" height="1.5em" width="1.5em" content-height="scale-to-fit"/></fo:block></fo:inline-container><fo:inline-container alignment-baseline="middle" inline-progression-dimension="86.531986531986531987%"><fo:block><fo:basic-link external-destination="url('atc_2011_ATC_20-248.pdf')" color="#0060A3" text-decoration="none" font-weight="bold">Court Ready PDF (clickable)</fo:basic-link></fo:block></fo:inline-container></fo:block></fo:block-container>
 
 
 
