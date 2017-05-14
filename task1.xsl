@@ -9,14 +9,16 @@
 	<xsl:variable name="def-font-size" select="9" />
 	<xsl:variable name="h1-font-size" select="12" />
 	<xsl:variable name="footer-font-size" select="7" />
-	<xsl:variable name="link-color" select="concat('#','0060A3')" />
-	<xsl:variable name="footer-border-top-color" select="concat('#','2F64C6')" />
-	<xsl:variable name="attach-bgcolor" select="concat('#','FDFBF4')" />
-	<xsl:variable name="attach-border-color" select="concat('#','DCDAD5')" />
-	<xsl:variable name="td-color" select="concat('#', 'F8F8F8')" />
-	<xsl:variable name="table-border-color" select="concat('#','7A7E7E')" />
-	<xsl:variable name="td-border-color" select="concat('#','CBD2D2')" />
+	<xsl:variable name="link-color" select="'#0060A3'" />
+	<xsl:variable name="footer-border-top-color" select="'#2F64C6'" />
+	<xsl:variable name="attach-bgcolor" select="'#FDFBF4'" />
+	<xsl:variable name="attach-border-color" select="'#DCDAD5'" />
+	<xsl:variable name="td-color" select="'#F8F8F8'" />
+	<xsl:variable name="table-border-color" select="'#7A7E7E'" />
+	<xsl:variable name="td-border-color" select="'#CBD2D2'" />
 	<xsl:variable name="para-margin" select="concat('1','em')" />
+	<xsl:variable name="list-indent-step" select="4" />
+	<xsl:variable name="list-indent-unit" select="'em'" />
 	
     
     <xsl:template match="/atlas-document">
@@ -121,7 +123,7 @@
 			<xsl:apply-templates />
 		</fo:block>
     </xsl:template>
-    
+		
     <xsl:template match="//wkdoc:level//para[text()]">
 		<xsl:if test="normalize-space(.)!=''">
 			<fo:block margin="{$para-margin} 0">
@@ -137,7 +139,8 @@
     </xsl:template>
     
     <xsl:template match="//italic[text()]">
-		<fo:inline font-style="oblique">
+		<xsl:message><xsl:text>italic</xsl:text></xsl:message>
+		<fo:inline font-style="italic">
 			<xsl:apply-templates />
 		</fo:inline>
     </xsl:template>
@@ -147,6 +150,65 @@
 			<xsl:apply-templates />
 		</fo:block>
     </xsl:template>
+    
+    <xsl:template match="unordered-list" name="unordered-list">
+		<xsl:param name="indent"/>
+		<xsl:variable name="current-indent">
+			<xsl:choose>
+				<xsl:when test="not($indent)"><xsl:value-of select="$list-indent-step"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="$indent"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+<!--
+		<xsl:message><xsl:value-of select="$current-indent"/></xsl:message>
+-->
+		
+		<fo:list-block start-indent="{concat($current-indent,$list-indent-unit)}">
+			<xsl:for-each select="list-item|unordered-list">
+				<xsl:choose>
+				<xsl:when test="self::list-item">
+					<xsl:call-template name="list-item">
+						<xsl:with-param name="indent" select="$current-indent" />
+					</xsl:call-template>
+<!--
+					<xsl:apply-templates select="."/>
+-->
+				</xsl:when>
+				<xsl:otherwise></xsl:otherwise>
+			</xsl:choose>
+			</xsl:for-each>
+		</fo:list-block>
+    </xsl:template>
+    
+    <xsl:template match="list-item" name="list-item">
+		<xsl:param name="indent"/>
+		<xsl:variable name="current-indent">
+			<xsl:choose>
+				<xsl:when test="not($indent)"><xsl:value-of select="$list-indent-step"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="$indent"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="next-indent" select="$current-indent + $list-indent-step" />
+		<fo:list-item >
+			<fo:list-item-label><fo:block></fo:block></fo:list-item-label>
+			<fo:list-item-body>
+				<xsl:apply-templates select="node() except unordered-list"/>
+				<xsl:for-each select="unordered-list">
+					<xsl:call-template name="unordered-list">
+						<xsl:with-param name="indent" select="$next-indent" />
+					</xsl:call-template>
+				</xsl:for-each>
+			</fo:list-item-body>
+		</fo:list-item>
+    </xsl:template>
+    
+<!--
+    <xsl:template match="list-item//para">
+		<fo:inline>
+			<xsl:apply-templates />
+		</fo:inline>
+    </xsl:template>
+-->
     
 </xsl:stylesheet>
 
