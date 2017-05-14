@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:fo="http://www.w3.org/1999/XSL/Format">
+	xmlns:fo="http://www.w3.org/1999/XSL/Format"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml">
 	
 	<xsl:variable name="heading-font-size" select="14" />
 	<xsl:variable name="attachlink-font-size" select="12" />
@@ -9,9 +10,11 @@
 	<xsl:variable name="footer-border-top-color" select="concat('#','2F64C6')" />
 	<xsl:variable name="attach-bgcolor" select="concat('#','FDFBF4')" />
 	<xsl:variable name="attach-border-color" select="concat('#','DCDAD5')" />
+	<xsl:variable name="td-color" select="concat('#', 'F8F8F8')" />
+	<xsl:variable name="table-border-color" select="concat('#','7A7E7E')" />
+	<xsl:variable name="td-border-color" select="concat('#','CBD2D2')" />
     
     <xsl:template match="/atlas-document">
-		<xsl:message>atlas</xsl:message>
         <fo:root>
             <fo:layout-master-set>
                 <!--one master page-->
@@ -73,18 +76,39 @@
 				</fo:inline-container>
 			</fo:block>
 		</fo:block-container>
-		
-       
-		
-<!--
-		<fo:block-container width="15%">
-			<fo:block background-color="#FDFBF4" border-color="#DCDAD5" border-style="solid" padding-bottom="0.3em">
-					<fo:external-graphic src="filepict.png" height="1.5em" content-height="scale-to-fit" padding="0.5em 0.3em 0"/>
-						<xsl:value-of select=".//description"/>
-			</fo:block>
-		</fo:block-container>
--->
     </xsl:template>
+    
+    <xsl:template match="//xhtml:table">
+		<fo:block border="1pt solid {$table-border-color}" padding="1em" margin="1em 0">
+			<xsl:apply-templates  />
+		</fo:block>
+    </xsl:template>
+    
+    <xsl:template match="//xhtml:table/xhtml:tr">
+		<fo:block start-indent="1em" border="1pt solid {$td-border-color}" border-width="thin" padding="2em 0.3em" background-color="{$td-color}">
+			<xsl:apply-templates />
+		</fo:block>
+    </xsl:template>
+    
+    <xsl:template match="//xhtml:td/note/para/bold">
+		<fo:inline>
+			<xsl:value-of select="." />
+		</fo:inline>
+    </xsl:template>
+    
+    <xsl:template match="//wlink">
+		<fo:basic-link external-destination="url('{@target-url}')" color="{$link-color}" text-decoration="none">
+			<xsl:value-of select="." />
+		</fo:basic-link>
+    </xsl:template>
+    
+    <xsl:template match="//cite-ref">
+		<xsl:variable name="href" select="concat('http:&#47;&#47;google.com&#47;?q=',@search-value)" />
+		<fo:basic-link external-destination="{$href}" color="{$link-color}" text-decoration="none" font-weight="bold">
+			<xsl:value-of select="." />
+		</fo:basic-link>
+    </xsl:template>
+    
     
 </xsl:stylesheet>
 
