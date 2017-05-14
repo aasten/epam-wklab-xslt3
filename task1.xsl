@@ -19,6 +19,8 @@
 	<xsl:variable name="para-margin" select="concat('1','em')" />
 	<xsl:variable name="list-indent-step" select="4" />
 	<xsl:variable name="list-indent-unit" select="'em'" />
+	<xsl:variable name="list-item-interval" select="-1" />
+	<xsl:variable name="list-item-interval-unit" select="'em'" />
 	
     
     <xsl:template match="/atlas-document">
@@ -139,7 +141,6 @@
     </xsl:template>
     
     <xsl:template match="//italic[text()]">
-		<xsl:message><xsl:text>italic</xsl:text></xsl:message>
 		<fo:inline font-style="italic">
 			<xsl:apply-templates />
 		</fo:inline>
@@ -151,6 +152,17 @@
 		</fo:block>
     </xsl:template>
     
+    <xsl:template match="//block-quote">
+		<fo:block start-indent="{concat($list-indent-step,$list-indent-unit)}">
+			<xsl:apply-templates select="node() except unordered-list"/>
+			<xsl:for-each select="unordered-list">
+				<xsl:call-template name="unordered-list">
+					<xsl:with-param name="indent" select="$list-indent-step + $list-indent-step" />
+				</xsl:call-template>
+			</xsl:for-each>
+		</fo:block>
+    </xsl:template>
+    
     <xsl:template match="unordered-list" name="unordered-list">
 		<xsl:param name="indent"/>
 		<xsl:variable name="current-indent">
@@ -158,21 +170,16 @@
 				<xsl:when test="not($indent)"><xsl:value-of select="$list-indent-step"/></xsl:when>
 				<xsl:otherwise><xsl:value-of select="$indent"/></xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable>
-<!--
-		<xsl:message><xsl:value-of select="$current-indent"/></xsl:message>
--->
-		
-		<fo:list-block start-indent="{concat($current-indent,$list-indent-unit)}">
+		</xsl:variable>	
+		<fo:list-block start-indent="{concat($current-indent,$list-indent-unit)}" 
+			space-before="{concat($list-item-interval,$list-item-interval-unit)}"
+			space-after="{concat($list-item-interval,$list-item-interval-unit)}">
 			<xsl:for-each select="list-item|unordered-list">
 				<xsl:choose>
 				<xsl:when test="self::list-item">
 					<xsl:call-template name="list-item">
 						<xsl:with-param name="indent" select="$current-indent" />
 					</xsl:call-template>
-<!--
-					<xsl:apply-templates select="."/>
--->
 				</xsl:when>
 				<xsl:otherwise></xsl:otherwise>
 			</xsl:choose>
@@ -189,7 +196,9 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="next-indent" select="$current-indent + $list-indent-step" />
-		<fo:list-item >
+		<fo:list-item 
+			space-before="{concat($list-item-interval,$list-item-interval-unit)}"
+			space-after="{concat($list-item-interval,$list-item-interval-unit)}" >
 			<fo:list-item-label><fo:block></fo:block></fo:list-item-label>
 			<fo:list-item-body>
 				<xsl:apply-templates select="node() except unordered-list"/>
@@ -200,15 +209,7 @@
 				</xsl:for-each>
 			</fo:list-item-body>
 		</fo:list-item>
-    </xsl:template>
-    
-<!--
-    <xsl:template match="list-item//para">
-		<fo:inline>
-			<xsl:apply-templates />
-		</fo:inline>
-    </xsl:template>
--->
+    </xsl:template>   
     
 </xsl:stylesheet>
 
