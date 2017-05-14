@@ -5,8 +5,10 @@
 	xmlns:xhtml="http://www.w3.org/1999/xhtml"
 	xmlns:wkdoc="http://www.wkpublisher.com/xml-namespaces/document">
 	
-	<xsl:variable name="heading-font-size" select="13" />
-	<xsl:variable name="def-font-size" select="10" />
+	<xsl:variable name="heading-font-size" select="12" />
+	<xsl:variable name="def-font-size" select="9" />
+	<xsl:variable name="h1-font-size" select="12" />
+	<xsl:variable name="footer-font-size" select="7" />
 	<xsl:variable name="link-color" select="concat('#','0060A3')" />
 	<xsl:variable name="footer-border-top-color" select="concat('#','2F64C6')" />
 	<xsl:variable name="attach-bgcolor" select="concat('#','FDFBF4')" />
@@ -15,6 +17,7 @@
 	<xsl:variable name="table-border-color" select="concat('#','7A7E7E')" />
 	<xsl:variable name="td-border-color" select="concat('#','CBD2D2')" />
 	<xsl:variable name="para-margin" select="concat('1','em')" />
+	
     
     <xsl:template match="/atlas-document">
         <fo:root>
@@ -23,7 +26,7 @@
                 <fo:simple-page-master master-name="content"
 						page-width="297mm" page-height="210mm">
                     <fo:region-body region-name="main-region"/>
-                    <fo:region-after region-name="footer" extent="1cm"/>
+                    <fo:region-after region-name="footer" extent="2em"/>
                 </fo:simple-page-master>
             </fo:layout-master-set>
             
@@ -32,7 +35,9 @@
 					<fo:block 
 						border-top-style="solid"
 						border-top-color="{$footer-border-top-color}"
-						padding-top="0.1em">
+						border-width="thin"
+						padding-top="0.1em"
+						font-size="{$footer-font-size}">
 						&#xA9; CCH
 					</fo:block>
 				</fo:static-content>
@@ -81,7 +86,7 @@
     </xsl:template>
     
     <xsl:template match="//xhtml:table">
-		<fo:block border="1pt solid {$table-border-color}" margin="1em 0" padding="1em" padding-right="0.4em">
+		<fo:block border="1pt solid {$table-border-color}" border-width="thin" margin="1em 0 0" padding="1em" padding-right="0.4em">
 			<xsl:apply-templates  />
 		</fo:block>
     </xsl:template>
@@ -112,7 +117,7 @@
     </xsl:template>
     
     <xsl:template match="//wkdoc:level">
-		<fo:block start-indent="0.3em">
+		<fo:block start-indent="0.3em" padding="0.5em 0">
 			<xsl:apply-templates />
 		</fo:block>
     </xsl:template>
@@ -135,6 +140,12 @@
 		<fo:inline font-style="oblique">
 			<xsl:apply-templates />
 		</fo:inline>
+    </xsl:template>
+    
+    <xsl:template match="//h1[.//text()]">
+		<fo:block font-size="{$h1-font-size}" margin="0.5em 0">
+			<xsl:apply-templates />
+		</fo:block>
     </xsl:template>
     
 </xsl:stylesheet>
