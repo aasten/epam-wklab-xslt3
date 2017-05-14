@@ -2,10 +2,11 @@
 <xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:fo="http://www.w3.org/1999/XSL/Format"
-	xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	xmlns:xhtml="http://www.w3.org/1999/xhtml"
+	xmlns:wkdoc="http://www.wkpublisher.com/xml-namespaces/document">
 	
-	<xsl:variable name="heading-font-size" select="14" />
-	<xsl:variable name="attachlink-font-size" select="12" />
+	<xsl:variable name="heading-font-size" select="13" />
+	<xsl:variable name="def-font-size" select="10" />
 	<xsl:variable name="link-color" select="concat('#','0060A3')" />
 	<xsl:variable name="footer-border-top-color" select="concat('#','2F64C6')" />
 	<xsl:variable name="attach-bgcolor" select="concat('#','FDFBF4')" />
@@ -13,6 +14,7 @@
 	<xsl:variable name="td-color" select="concat('#', 'F8F8F8')" />
 	<xsl:variable name="table-border-color" select="concat('#','7A7E7E')" />
 	<xsl:variable name="td-border-color" select="concat('#','CBD2D2')" />
+	<xsl:variable name="para-margin" select="concat('1','em')" />
     
     <xsl:template match="/atlas-document">
         <fo:root>
@@ -34,7 +36,7 @@
 						&#xA9; CCH
 					</fo:block>
 				</fo:static-content>
-                <fo:flow flow-name="main-region">
+                <fo:flow flow-name="main-region" font-size="{$def-font-size}">
 					<fo:block>
 						<xsl:apply-templates />
                     </fo:block>
@@ -79,13 +81,13 @@
     </xsl:template>
     
     <xsl:template match="//xhtml:table">
-		<fo:block border="1pt solid {$table-border-color}" padding="1em" margin="1em 0">
+		<fo:block border="1pt solid {$table-border-color}" margin="1em 0" padding="1em" padding-right="0.4em">
 			<xsl:apply-templates  />
 		</fo:block>
     </xsl:template>
     
     <xsl:template match="//xhtml:table/xhtml:tr">
-		<fo:block start-indent="1em" border="1pt solid {$td-border-color}" border-width="thin" padding="2em 0.3em" background-color="{$td-color}">
+		<fo:block start-indent="1.5em" border="1pt solid {$td-border-color}" border-width="thin" padding="2em 0.3em" background-color="{$td-color}">
 			<xsl:apply-templates />
 		</fo:block>
     </xsl:template>
@@ -109,6 +111,31 @@
 		</fo:basic-link>
     </xsl:template>
     
+    <xsl:template match="//wkdoc:level">
+		<fo:block start-indent="0.3em">
+			<xsl:apply-templates />
+		</fo:block>
+    </xsl:template>
+    
+    <xsl:template match="//wkdoc:level//para[text()]">
+		<xsl:if test="normalize-space(.)!=''">
+			<fo:block margin="{$para-margin} 0">
+				<xsl:apply-templates />
+			</fo:block>
+		</xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="//wkdoc:level//bold[text()]">
+		<fo:inline font-weight="bold">
+			<xsl:apply-templates />
+		</fo:inline>
+    </xsl:template>
+    
+    <xsl:template match="//italic[text()]">
+		<fo:inline font-style="oblique">
+			<xsl:apply-templates />
+		</fo:inline>
+    </xsl:template>
     
 </xsl:stylesheet>
 
